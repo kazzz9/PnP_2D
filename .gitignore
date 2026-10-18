@@ -1,0 +1,57 @@
+# Keep source code and notebooks throughout the project.
+*
+!*/
+!*.py
+!*.ipynb
+!*.sh
+
+# Keep project metadata and reproducibility configuration.
+!/.gitignore
+!/README*
+!/LICENSE*
+!/requirement.txt
+!/requirements*.txt
+!/pyproject.toml
+!/setup.cfg
+!/environment.yml
+!/environment.yaml
+!/config/**
+
+# Keep model implementations and the denoising study, including study results.
+!/model/**
+!/denoise_capbility/**
+
+# Exclude generated files even within retained directories.
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.cache/
+.pytest_cache/
+.mypy_cache/
+.mplconfig/
+*.log
+nohup.out
+*.pth
+*.pt
+*.ckpt
+*.lmdb
+
+# Local environments and private configuration.
+.env
+.env.*
+.venv/
+venv/
+env/
+ENV/
+local_settings.py
+
+# Training runs and local tooling are not versioned.
+/experiments/
+/dataset/
+/.git/
+/.agents/
+/.codex/
+/.vscode/
+/build/
+/dist/
+*.egg-info/
