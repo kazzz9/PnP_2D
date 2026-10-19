@@ -28,7 +28,7 @@ UniDiff-NMR/
 ├── results/                      # 4D reconstruction arrays and timing reports
 ├── train_2D.py                    # 2D training entry point
 ├── test_nus_2D.ipynb              # 2D NUS reconstruction
-├── test_nus3D.ipynb               # 3D NUS reconstruction with 64 × 64 slices
+├── test_nus_3D.ipynb               # 3D NUS reconstruction with 64 × 64 slices
 ├── test_denosing.ipynb            # DOSY denoising (filename as stored)
 ├── test_PS_real.ipynb             # Pure-shift reconstruction
 ├── test_virtual_decoupling.ipynb  # Virtual decoupling
@@ -139,7 +139,7 @@ Configure the input data, sampling masks, pretrained checkpoints, GPU IDs, and o
 | Application | Notebook | Configuration (under `config/`) |
 | --- | --- | --- |
 | 2D NUS reconstruction | `test_nus_2D.ipynb` | `sr_sr3_256_256_val.json` |
-| 3D NUS reconstruction | `test_nus3D.ipynb` | `sr_sr3_64_64.json` |
+| 3D NUS reconstruction | `test_nus_3D.ipynb` | `sr_sr3_64_64.json` |
 | 4D NUS reconstruction | `test_nus_4D_real.py` | `sr_sr3_64_64.json` |
 | DOSY denoising | `test_denosing.ipynb` | `sr_sr3_256_256_val.json` |
 | Pure-shift | `test_PS_real.ipynb` | `sr_sr3_256_256_val.json` |
@@ -149,7 +149,7 @@ Configure the input data, sampling masks, pretrained checkpoints, GPU IDs, and o
 
 `test_nus_2D.ipynb` covers data loading, undersampling-mask generation, observation preparation, blockwise reconstruction, and result assembly.
 
-`test_nus3D.ipynb` applies the 2D 64 × 64 prior to slices of 3D data. Its workflow includes NMRPipe data loading, real and imaginary component processing, slice reconstruction, and volume assembly. The standalone `test_nus_4D_real.py` script supports 4D NUS experiments.
+`test_nus_3D.ipynb` applies the 2D 64 × 64 prior to slices of 3D data. Its workflow includes NMRPipe data loading, real and imaginary component processing, slice reconstruction, and volume assembly. The standalone `test_nus_4D_real.py` script supports 4D NUS experiments.
 
 For 2D NUS, prepare `data/GB1_DComplex_Dephase_Part.mat` with the `LR` variable and update the mask generator's `lib_path` to your local `libPG_cb.so`. For 3D NUS, prepare the selected dataset under `data/data_3D/` and configure the slice, mask, and result paths in the notebook.
 
