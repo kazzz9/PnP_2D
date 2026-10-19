@@ -18,7 +18,7 @@ UniDiff-NMR/
 ├── model/
 │   ├── sr3_modules/
 │   │   ├── unet_2D.py            # 2D UNet
-│   │   ├── diffusion_2D.py
+│   │   ├── diffusion_256.py
 │   │   └── diffusion64.py
 │   ├── networks.py               # Network construction
 │   ├── model.py                  # Training, sampling, and reconstruction
