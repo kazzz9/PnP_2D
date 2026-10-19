@@ -65,7 +65,8 @@ class DDPM(BaseModel):
 
 
 
-    def test(self, continous=False, pnp_mode=None):
+    def test(self, continous=False, pnp_mode=None,
+             pad_shape=None, pad_height=None, pad_width=None):
         self.netG.eval()
         with torch.no_grad():
             netG = self.netG.module if isinstance(self.netG, nn.DataParallel) else self.netG
@@ -79,7 +80,8 @@ class DDPM(BaseModel):
             else:
                 self.SR = netG.super_resolution(
                     self.data['SR'], self.data['LR'], continous,
-                    pnp_mode=pnp_mode)
+                    pnp_mode=pnp_mode, pad_shape=pad_shape,
+                    pad_height=pad_height, pad_width=pad_width)
         self.netG.train()
 
 

@@ -12,7 +12,7 @@
         // "resume_state": null
         // "resume_state": "/mnt/DATA1/chenbo/code/NUS_Diffusion/experiments/sr_NUSNMR_260603_023238/checkpoint/I1000000_E100"
         "resume_state": "/mnt/DATA1/chenbo/code/NUS_Diffusion/experiments/sr_NUSNMR_251013_072343/checkpoint/I910000_E91"
-        // "resume_state": "/mnt/DATA1/rongzhuoran/experiments/sr_NUSNMR_251022_071013/checkpoint/I270000_E27"
+   
     },
     "datasets": {
         "train": {

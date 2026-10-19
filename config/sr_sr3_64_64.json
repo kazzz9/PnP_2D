@@ -11,12 +11,7 @@
         "checkpoint": "checkpoint",
         // "resume_state": null
         "resume_state" : "/mnt/DATA1/shaojie/code/Image-Super-Resolution-via-Iterative-Refinement-master/experiments/sr_NUSNMR_260711_201821/checkpoint/I250000_E25"
-        // "resume_state": "/mnt/DATA1/shaojie/code/Image-Super-Resolution-via-Iterative-Refinement-master/experiments/sr_NUSNMR_260707_113634/checkpoint/I1000000_E100"
-        // "resume_state": "experiments/sr_NUSNMR_260706_040042/checkpoint/I170000_E544"
-        // "resume_state": "experiments/sr_NUSNMR_260704_132805/checkpoint/I160000_E512"
-        // "resume_state": "/mnt/DATA1/chenbo/code/NUS_Diffusion/experiments/sr_NUSNMR_260603_023238/checkpoint/I1000000_E100"
-        // "resume_state": "/mnt/DATA1/chenbo/code/NUS_Diffusion/experiments/sr_NUSNMR_251013_072343/checkpoint/I910000_E91"
-        // "resume_state": "/mnt/DATA1/rongzhuoran/experiments/sr_NUSNMR_251022_071013/checkpoint/I270000_E27"
+   
     },
     "datasets": {
         "train": {

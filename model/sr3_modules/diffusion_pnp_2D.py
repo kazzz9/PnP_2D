@@ -443,13 +443,33 @@ class GaussianDiffusion(nn.Module):
         return ret_img
 
     @torch.no_grad()
-    def _p_sample_loop_nus(self, x_in, fid):
+    def _p_sample_loop_nus(self, x_in, fid, pad_shape=None,
+                           pad_height=None, pad_width=None):
         device = self.betas.device
         sample_inter = 1 | self.num_timesteps // 10
         img = torch.randn(x_in.shape, device=device)
         ret_img = x_in
         num_iter = 100
         x_nus = fid
+
+        # Explicit notebook geometry takes precedence over legacy environment defaults.
+        if pad_shape is None:
+            pad_shape = (
+                int(os.environ.get('NUS_PAD_HEIGHT', '256')),
+                int(os.environ.get('NUS_PAD_WIDTH', '768')),
+            )
+        if pad_height is None:
+            pad_height = int(os.environ.get('NUS_CROP_HEIGHT', '0'))
+        if pad_width is None:
+            pad_width = int(os.environ.get('NUS_CROP_WIDTH', '30'))
+        if (len(pad_shape) != 2 or any(v <= 0 for v in pad_shape)
+                or not 0 <= pad_height < pad_shape[0]
+                or not 0 <= pad_width < pad_shape[1]):
+            raise ValueError('Invalid padding geometry')
+        block_h, block_w = x_in.shape[-2:]
+        if (pad_shape[0] % block_h or pad_shape[1] % block_w
+                or (pad_shape[0] // block_h) * (pad_shape[1] // block_w) != x_in.shape[0]):
+            raise ValueError('Padding geometry does not match the input blocks')
 
         for i in tqdm(reversed(range(num_iter)), desc='nus 2D PnP sampling', total=num_iter):
 
@@ -458,12 +478,6 @@ class GaussianDiffusion(nn.Module):
             admm_iters = int(os.environ.get('NUS_ADMM_ITERS', '3'))
             sparse_domain = 'freq'
 
-            pad_shape = [
-                int(os.environ.get('NUS_PAD_HEIGHT', '256')),
-                int(os.environ.get('NUS_PAD_WIDTH', '256')),
-            ]
-            pad_height = int(os.environ.get('NUS_CROP_HEIGHT', '0'))
-            pad_width = int(os.environ.get('NUS_CROP_WIDTH', '0'))
 
             img = torch.complex(img[:, 0], img[:, 1])
             img = reconstruct_data_ddpm(
@@ -626,12 +640,7 @@ class GaussianDiffusion(nn.Module):
 
             # ---- vd restruction----------------------------------------------------
             elif pnp_mode == 'vd':
-                # rho = 0.2
-                # lam_l1 = 0.0005
-                # admm_iters = 3
-                # sparse_domain = 'freq'
-                # J = 24
-                # dwell_time = 1 / 3501.40087
+
                 rho = 0.8
                 lam_l1 = 0.03
                 admm_iters = 3
@@ -647,7 +656,7 @@ class GaussianDiffusion(nn.Module):
                 noise_fid = reconstruct_data_ddpm(x_nus.squeeze(), pad_shape, pad_height, pad_width)
                 B, N1, N2 = fid_est.shape
                 t2 = torch.arange(N2).to(fid_est.device) * dwell_time
-                c = torch.cos(np.pi * 16 * t2) * torch.sin(np.pi * 23 * t2)
+                c = torch.cos(np.pi * J * t2)
                 c = c.reshape(1, 1, N2)
                 HTy = c * noise_fid
                 denom = c * c + rho
@@ -902,6 +911,7 @@ class GaussianDiffusion(nn.Module):
         self, x_in, fid, continous=False, label=None, meta=None,
         pnp_mode=None, lam_l1=None, lam_lr=None, norm_spec=None,
         cs1=6500, cs2=7700,
+        pad_shape=None, pad_height=None, pad_width=None,
     ):
      
         if self.conditional:
@@ -922,7 +932,10 @@ class GaussianDiffusion(nn.Module):
         if pnp_mode == 'ca':
             return self._p_sample_loop_ca(x_in, fid)
         if pnp_mode == 'nus':
-            return self._p_sample_loop_nus(x_in, fid)
+            return self._p_sample_loop_nus(
+                x_in, fid, pad_shape=pad_shape,
+                pad_height=pad_height, pad_width=pad_width,
+            )
 
         return self._p_sample_loop_single_prior(
             x_in, fid, continous=continous, label=label, meta=meta,
@@ -943,11 +956,13 @@ class GaussianDiffusion(nn.Module):
         self, x_in, fid, continous=False, label=None, meta=None,
         pnp_mode=None, lam_l1=None, lam_lr=None, norm_spec=None,
         cs1=6500, cs2=7700,
+        pad_shape=None, pad_height=None, pad_width=None,
     ):
         return self.p_sample_loop(
             x_in, fid, continous, label=label, meta=meta,
             pnp_mode=pnp_mode, lam_l1=lam_l1, lam_lr=lam_lr,
             norm_spec=norm_spec, cs1=cs1, cs2=cs2,
+            pad_shape=pad_shape, pad_height=pad_height, pad_width=pad_width,
         )
 
 

@@ -6,7 +6,6 @@ import numpy as np
 import scipy.io as scio
 from tqdm import tqdm
 from torch.utils.data import Dataset
-from data import data_api_1 as Data
 import model as Model
 import argparse
 import logging
