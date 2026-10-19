@@ -74,7 +74,7 @@ def init_weights(net, init_type='kaiming', scale=1, std=0.02):
 
 def define_G_2D(opt):
     """Build the 2D UNet and the image_size_1/image_size_2 diffusion."""
-    from .sr3_modules import diffusion_pnp_2D, unet_2D
+    from .sr3_modules import diffusion_2D, unet_2D
 
     model_opt = opt['model']
     if ('norm_groups' not in model_opt['unet']) or model_opt['unet']['norm_groups'] is None:
@@ -92,7 +92,7 @@ def define_G_2D(opt):
         image_size=model_opt['diffusion']['image_size']
     )
 
-    netG = diffusion_pnp_2D.GaussianDiffusion(
+    netG = diffusion_2D.GaussianDiffusion(
         model,
         image_size_1=model_opt['diffusion']['image_size_1'],
         image_size_2=model_opt['diffusion']['image_size_2'],
