@@ -79,36 +79,42 @@ Checkpoints must match the network architecture and input dimensions. Set `resum
 
 Inference loads `I1000000_E100_gen.pth`. Resuming training also requires the corresponding `I1000000_E100_opt.pth`. Set `resume_state` to `null` to train from scratch.
 
-## Pretrained Weights (Google Drive)
+## Pretrained Weights
 
-Model weights are distributed separately from the source code. The current `.gitignore` excludes checkpoint files (`*.pth`, `*.pt`, and `*.ckpt`) and the `experiments/` directory. Google Drive download links have not yet been added; replace the placeholders below with the links for the corresponding pretrained models.
+Download the pretrained model weights manually from [Google Drive](https://drive.google.com/drive/folders/1orOH96FaDM25iG_pM4tmn_OtPPCfKIXO).
 
-| Model | Configuration | Download |
+| Model | Configuration | Checkpoint |
 | --- | --- | --- |
-| 64 × 64 prior | `config/sr_sr3_64_64.json` | Google Drive link to be added |
-| 256 × 256 prior | `config/sr_sr3_256_256_val.json` | Google Drive link to be added |
+| 64 × 64 prior | `config/sr_sr3_64_64.json` | `I250000_E25_gen.pth` |
+| 256 × 256 prior | `config/sr_sr3_256_256_val.json` | `I910000_E91_gen.pth` |
 
-To publish weights, upload each original `*_gen.pth` file to Google Drive, set **General access → Anyone with the link → Viewer**, and allow downloading. Upload the corresponding `*_opt.pth` file as well if training resumption is required.
-
-Download the weights manually from the Google Drive links above. Place the files under the project root using the following layout (checkpoint filenames are examples; keep the original names of your downloaded files):
+Place the downloaded files under the project root, preserving their original filenames:
 
 ```text
 checkpoints/
 ├── 64/
-│   └── model_gen.pth
+│   └── I250000_E25_gen.pth
 └── 256/
-    └── model_gen.pth
+    └── I910000_E91_gen.pth
 ```
 
-Set `path.resume_state` in the configuration used by your workflow to the downloaded checkpoint prefix, **without** `_gen.pth`:
+Set `path.resume_state` in the corresponding configuration to the local checkpoint prefix, **without** `_gen.pth`.
+
+For `config/sr_sr3_64_64.json`:
 
 ```json
-"resume_state": "checkpoints/64/model"
+"resume_state": "checkpoints/64/I250000_E25"
 ```
 
-For the 256 × 256 configuration, use `"checkpoints/256/model"`. If the downloaded file has a different name, adjust the prefix accordingly. Replace the existing machine-specific absolute paths in both configuration files before running inference. The current entry points load local checkpoints; downloading is a separate preparation step.
+For `config/sr_sr3_256_256_val.json`:
 
-For training resumption, place the optimizer state beside the model with the same prefix, for example `model_gen.pth` and `model_opt.pth`. For training from scratch, set `path.resume_state` to `null`.
+```json
+"resume_state": "checkpoints/256/I910000_E91"
+```
+
+Replace the existing machine-specific absolute paths before running inference. The code loads the downloaded local files.
+
+These `*_gen.pth` files are used for inference. Resuming training also requires the corresponding `*_opt.pth` file with the same prefix. Set `path.resume_state` to `null` to train from scratch.
 
 ## 2D Training
 
