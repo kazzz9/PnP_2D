@@ -240,8 +240,9 @@ class GaussianDiffusion(nn.Module):
                         phase  = torch.angle(T)
                         thresh = lam_l1 / rho
                         x_sparse = torch.clamp(mag - thresh, min=0.0) * torch.exp(1j * phase)
-                    # (B2) z1-update
-                    z1 = low_rank_svt(x_sparse, lam_lr / rho) 
+                    # (B2) z1-update：仅在窗口内做 SVT
+                    z1 = x_sparse.clone()
+                    z1[:, cs1:cs2] = low_rank_svt(x_sparse[:, cs1:cs2], lam_lr / rho)
                     # (B3) z2-update
 
                     x_for_diff_full = x_admm + u2               
