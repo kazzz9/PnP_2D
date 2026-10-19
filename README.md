@@ -1,13 +1,13 @@
-# PnP-NMR 2D
+# UniDiff-NMR
 
-Nuclear magnetic resonance (NMR) reconstruction, denoising, and decoupling using two-dimensional diffusion priors. The Plug-and-Play (PnP) framework combines a 2D UNet diffusion prior with task-specific data constraints for NUS reconstruction, DOSY denoising, pure-shift, and virtual-decoupling applications.
+UniDiff-NMR performs nuclear magnetic resonance (NMR) reconstruction, denoising, and decoupling using two-dimensional diffusion priors. The Plug-and-Play (PnP) framework combines a 2D UNet diffusion prior with task-specific data constraints for NUS reconstruction, DOSY denoising, pure-shift, and virtual-decoupling applications.
 
 The project uses a 2D model throughout its workflows. The 3D NUS notebook and 4D NUS script also apply the 2D prior to slices or data blocks; the dimensionality of the data differs from that of the network. One-dimensional training and notebooks are outside the current workflow.
 
 ## Project Structure
 
 ```text
-PnP_2D/
+UniDiff-NMR/
 ├── config/
 │   ├── sr_sr3_64_64.json          # 64 × 64 model configuration
 │   └── sr_sr3_256_256_val.json    # 256 × 256 inference configuration
@@ -43,14 +43,14 @@ PnP_2D/
 Use Python 3.10 and install a PyTorch build compatible with your local CUDA environment.
 
 ```bash
-cd PnP_2D
-conda create -n pnp-2d python=3.10 -y
-conda activate pnp-2d
+cd UniDiff-NMR
+conda create -n unidiff-nmr python=3.10 -y
+conda activate unidiff-nmr
 
 # After installing a suitable PyTorch build, install the remaining dependencies.
 pip install -r requirement.txt
 pip install scipy matplotlib nmrglue PyYAML jupyterlab ipykernel
-python -m ipykernel install --user --name pnp-2d --display-name "PnP-NMR 2D"
+python -m ipykernel install --user --name unidiff-nmr --display-name "UniDiff-NMR"
 ```
 
 The dependency file is named `requirement.txt`. Workflows involving NMRPipe processing require NMRPipe and a C shell, such as `tcsh`, to be installed separately. Examples that use an external sampling-mask generator also require the corresponding `libPG_cb.so` library.
@@ -128,7 +128,7 @@ The current simulated training data uses 64 × 64 patches. Training records the 
 
 ## Reconstruction and Data Processing
 
-Start Jupyter from the project root and select the **PnP-NMR 2D** kernel:
+Start Jupyter from the project root and select the **UniDiff-NMR** kernel:
 
 ```bash
 jupyter lab
